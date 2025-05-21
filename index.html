@@ -238,18 +238,18 @@ window.handleAuth = async () => {
         if (workerSnap.exists()) {
           showMessage("Logged in successfully!");
           setTimeout(() => {
-            window.location.href = "https://github.com/sunny1451/ai/general.html";
+            window.location.href = "https://sunny1451.github.io/ai/general.html";
           }, 1000);
         } else {
           showMessage("You haven't completed registration. Redirecting...", true);
           setTimeout(() => {
-            window.location.href = "https://github.com/sunny1451/ai/general.html";
+            window.location.href = "https://sunny1451.github.io/ai/general.html";
           }, 1500);
         }
       } catch (firestoreErr) {
         showMessage("Login successful. Finishing setup...", false);
         setTimeout(() => {
-          window.location.href = "https://github.com/sunny1451/ai/general.html";
+          window.location.href = "https://sunny1451.github.io/ai/general.html";
         }, 1500);
       }
 
