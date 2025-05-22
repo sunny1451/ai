@@ -13,40 +13,45 @@
   body {
     margin: 0;
     font-family: "Segoe UI", sans-serif;
-    background: #f4f4f4;
+    background: #f2f3f5;
     color: #333;
     display: flex;
     height: 100vh;
     overflow: hidden;
+    flex-direction: row;
   }
 
   .sidebar {
     width: 260px;
     background-color: #ffffff;
-    border-right: 1px solid #e5e5e5;
+    border-right: 1px solid #e0e0e0;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
   }
 
   .sidebar h2 {
     font-size: 22px;
     margin-bottom: 20px;
+    color: #00796b;
+    text-align: center;
   }
 
   .sidebar button {
     padding: 12px 15px;
     border: none;
-    background: #f1f1f1;
-    border-radius: 10px;
+    background: #f8f8f8;
+    border-radius: 8px;
     font-size: 15px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.1s;
+    text-align: left;
   }
 
   .sidebar button:hover {
-    background-color: #e0e0e0;
+    background-color: #e0f2f1;
+    transform: scale(1.01);
   }
 
   .main {
@@ -54,74 +59,116 @@
     display: flex;
     flex-direction: column;
     background: #f9f9f9;
-    height: 100vh;
+    position: relative;
   }
 
   .chat-header {
-    background-color: #fff;
-    padding: 20px;
+    background-color: #00a67e;
+    color: white;
+    padding: 16px 20px;
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .chat-header .title {
+    font-size: 22px;
     font-weight: bold;
-    font-size: 18px;
-    border-bottom: 1px solid #e2e2e2;
+  }
+
+  .chat-header .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .chat-header .nav-buttons button {
+    background-color: white;
+    color: #00a67e;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .chat-header .nav-buttons button:hover {
+    background-color: #f1f1f1;
   }
 
   #chatBox {
     flex-grow: 1;
-    padding: 20px;
+    padding: 15px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 14px;
     scroll-behavior: smooth;
+    background-color: #eef1f5;
   }
 
   .message {
-    max-width: 75%;
+    max-width: 80%;
     padding: 12px 16px;
-    border-radius: 12px;
+    border-radius: 16px;
     line-height: 1.5;
     font-size: 15px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     white-space: pre-wrap;
     word-wrap: break-word;
   }
 
   .user {
-    background-color: #d1ffd1;
+    background-color: #d2ffd8;
     align-self: flex-end;
+    border-bottom-right-radius: 0;
   }
 
   .ai {
-    background-color: #eeeeee;
+    background-color: #ffffff;
     align-self: flex-start;
+    border-bottom-left-radius: 0;
   }
 
   .chat-input {
     display: flex;
     align-items: center;
-    padding: 15px;
+    padding: 12px 16px;
     border-top: 1px solid #ddd;
     background-color: #fff;
+    gap: 10px;
+    flex-wrap: wrap;
   }
 
   .chat-input textarea {
     flex-grow: 1;
     resize: none;
-    padding: 12px 15px;
+    padding: 12px;
     font-size: 15px;
     border: 1px solid #ccc;
-    border-radius: 10px;
+    border-radius: 25px;
     height: 45px;
-    overflow: hidden;
+    outline: none;
+    background-color: #f7f7f7;
+  }
+
+  .send-mic {
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
 
   .chat-input button {
-    margin-left: 10px;
-    padding: 10px 20px;
     background-color: #00a67e;
     color: white;
     border: none;
-    border-radius: 8px;
+    padding: 10px 16px;
+    border-radius: 25px;
     font-size: 15px;
     cursor: pointer;
     transition: background 0.2s;
@@ -131,14 +178,31 @@
     background-color: #01926d;
   }
 
+  #micButton {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #micButton:hover {
+    background: #d32f2f;
+  }
+
   #loader {
-    margin-left: 12px;
     font-size: 14px;
     color: #999;
     display: none;
+    margin-left: 10px;
   }
 
-  /* Custom Scrollbar */
   #chatBox::-webkit-scrollbar {
     width: 6px;
   }
@@ -147,56 +211,139 @@
     background-color: #ccc;
     border-radius: 3px;
   }
-  
-  /* Responsive Fix */
+
+  /* Responsive Styles */
   @media (max-width: 768px) {
+    body {
+      flex-direction: column;
+    }
+
     .sidebar {
       display: none;
     }
+
     .main {
-      flex: 1;
       width: 100%;
     }
+
+    .chat-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .chat-header .title {
+      font-size: 18px;
+    }
+
+    .chat-header .nav-buttons {
+      width: 100%;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .chat-input {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.chat-input textarea {
+  width: 100%;
+  flex: 1;
+}
+
+.send-mic {
+  display: flex;
+  flex-shrink: 0;
+  gap: 10px;
+}
+}
+  .sidebar {
+  position: fixed;
+  top: 0;
+  left: -260px; /* hidden by default */
+  height: 100%;
+  width: 260px;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1000;
+  transition: left 0.3s ease;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
   }
 
-  /* Mic button styling */
-  #micButton {
-    background: #f44336;
-    color: white;
-    border: none;
-    padding: 10px 12px;
-    border-radius: 50%;
+  .main {
+    width: 100%;
+  }
+
+  .sidebar {
+    display: flex;
+  }
+
+  .chat-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chat-header .title {
+    font-size: 20px;
     cursor: pointer;
-    margin-left: 10px;
   }
-
-  #micButton:hover {
-    background: #d32f2f;
-  }
-
+}
 
 </style>
+
 </head>
 <body>
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
     <h2>💬 personal AI</h2>
-    <button id="newChatBtn">➕ New Chat</button>
-    <button id="deleteChat">🗑️ Clear Chat</button>
-    <button id="generalPurposeBtn">💡 General Chat Purpose</button>
+    <button id="closeSidebar">✖️</button>
   </div>
+  <button id="newChatBtn">➕ New Chat</button>
+  <button id="deleteChat">🗑️ Clear Chat</button>
+  <button id="generalPurposeBtn">💡 General Chat Purpose</button>
+</div>
 
-  <div class="main">
-    <div class="chat-header">Chaithanya</div>
-    <div id="chatBox"></div>
-    <div class="chat-input">
-      <textarea id="userInput" rows="1" placeholder="Type your message..."></textarea>
-      <button id="sendButton">Send</button>
-      <button id="micButton">🎤</button>
-      <span id="loader">Thinking...</span>
-    </div>
+<div class="main">
+  <div class="chat-header">
+    <div class="title" id="toggleSidebar">Ram</div>
   </div>
-</body>
-</html>
+  <div id="chatBox"></div>
+  <div class="chat-input">
+    <textarea id="userInput" rows="1" placeholder="Type your message..."></textarea>
+    <button id="sendButton">Send</button>
+    <button id="micButton">🎤</button>
+    <span id="loader">Thinking...</span>
+  </div>
+</div>
+
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
   import {
@@ -339,96 +486,146 @@
     return matrix[a.length][b.length];
   }
 
-  const API_KEY = "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";
+const config = {
+  geminiKey: "AIzaSyAOmhx9e1ODVnzD6yfcDHGqqW9PCiYD52A",
+  wolframAppId: "XYHJ2G-J9UR5A4J9H",
+  runwayKey: "key_81cef37dfb71dee305804c1b7a919f02f784b3b0ce739bb4d058a7ebe2148f567e27bd22f6ef1a106b2488db4dd7f3bbfe1bc7c987188ee771959fbf68d7c56a",
+  gnewsKey: "8e348172b0cfccdde7fdf1a65b0b5bc2",
+  openRouterKey: "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"  // your new key
+};
 
-  async function getAIResponse(userText) {
+async function getAIResponse(userText) {
+  if (!config.openRouterKey) {
+    console.error("OpenRouter API key missing!");
+    return "API key missing!";
+  }
+
+  const requestBody = {
+    model: "mistralai/mistral-7b-instruct",
+    messages: [
+      {
+        role: "system",
+        content: "Your name is Ram friendly AI. Keep all replies casual, short (8–9 words), and human-like. No long sentences. No robot talk."
+      },
+      { role: "user", content: userText }
+    ]
+  };
+
+  // Simple retry mechanism (max 2 tries)
+  for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${API_KEY}`
+          "Authorization": `Bearer ${config.openRouterKey}`
         },
-        body: JSON.stringify({
-          model: "mistralai/mistral-7b-instruct",
-          messages: [
-            {
-              role: "system",
-              content: "Your name is Chaithanya. You're a chill, friendly AI who talks like a best friend. Keep all replies casual, short (2–3 words), and human-like. No long sentences. No robot talk."
-            },
-            { role: "user", content: userText }
-          ]
-        })
+        body: JSON.stringify(requestBody)
       });
+
+      if (!response.ok) {
+        // Log HTTP errors explicitly
+        const errText = await response.text();
+        console.error(`API HTTP error (attempt ${attempt}):`, response.status, errText);
+        if (attempt === 2) return "Oops! API error.";
+        continue;
+      }
+
       const data = await response.json();
-      return data.choices?.[0]?.message?.content || "Oops!";
+
+      // Safely access response content
+      const content = data?.choices?.[0]?.message?.content;
+      if (content) return content;
+
+      console.warn("API response missing content:", data);
+      return "Oops! No content.";
+
     } catch (err) {
-      console.error("AI error:", err);
-      return "Oops! Try again.";
+      console.error(`AI error (attempt ${attempt}):`, err);
+      if (attempt === 2) return "Oops! Try again.";
+      // else retry
     }
   }
+}
 
-  async function getFirestoreAnswer(userMessage) {
-    const input = normalizeText(userMessage);
-    for (const qa of cachedQAPairs) {
-      const question = normalizeText(qa.question || "");
-      if (input === question || levenshteinDistance(input, question) === 1) {
-        return qa.answer || "";
-      }
+async function getFirestoreAnswer(userMessage) {
+  const input = normalizeText(userMessage);
+  for (const qa of cachedQAPairs) {
+    const question = normalizeText(qa.question || "");
+    if (input === question || levenshteinDistance(input, question) === 1) {
+      return qa.answer || "";
     }
-    return null;
   }
+  return null;
+}
 
-  async function handleSend() {
-    const input = userInput.value.trim();
-    if (!input || !messagesRef) return;
+async function handleSend() {
+  const input = userInput.value.trim();
+  if (!input || !messagesRef) return;
 
-    appendMessage(input, "user");
-    userInput.value = "";
-    loader.style.display = "inline-block";
-    saveMessageToFirestore("user", input);
+  appendMessage(input, "user");
+  userInput.value = "";
+  loader.style.display = "inline-block";
+  saveMessageToFirestore("user", input);
 
-    await new Promise(resolve => setTimeout(resolve, 50));
-    let aiReply = await getFirestoreAnswer(input);
-    if (!aiReply) aiReply = await getAIResponse(input);
+  await new Promise(resolve => setTimeout(resolve, 50));
+  let aiReply = await getFirestoreAnswer(input);
+  if (!aiReply) aiReply = await getAIResponse(input);
 
-    appendMessage(aiReply, "ai");
-    saveMessageToFirestore("ai", aiReply);
-    loader.style.display = "none";
+  appendMessage(aiReply, "ai");
+  saveMessageToFirestore("ai", aiReply);
+  loader.style.display = "none";
+}
+
+sendBtn.addEventListener("click", handleSend);
+userInput.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    handleSend();
   }
+});
 
-  sendBtn.addEventListener("click", handleSend);
-  userInput.addEventListener("keydown", e => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
+deleteBtn.addEventListener("click", async () => {
+  if (!messagesRef) return;
+  try {
+    const snapshot = await getDocs(messagesRef);
+    for (const docSnap of snapshot.docs) {
+      await deleteDoc(docSnap.ref);
     }
-  });
-
-  deleteBtn.addEventListener("click", async () => {
-    if (!messagesRef) return;
-    try {
-      const snapshot = await getDocs(messagesRef);
-      for (const docSnap of snapshot.docs) {
-        await deleteDoc(docSnap.ref);
-      }
-      chatBox.innerHTML = "";
-      alert("Chat cleared.");
-    } catch (err) {
-      console.error("Error deleting chat:", err);
-      alert("Failed to clear chat.");
-    }
-  });
-
-  newChatBtn.addEventListener("click", () => {
     chatBox.innerHTML = "";
-    userInput.value = "";
+    alert("Chat cleared.");
+  } catch (err) {
+    console.error("Error deleting chat:", err);
+    alert("Failed to clear chat.");
+  }
+});
+
+newChatBtn.addEventListener("click", () => {
+  chatBox.innerHTML = "";
+  userInput.value = "";
+});
+
+document.getElementById("generalPurposeBtn").addEventListener("click", () => {
+  window.location.href = "https://github.com/sunny1451/ai.git/general.html";
+});
+const sidebar = document.getElementById('sidebar');
+  const toggleSidebar = document.getElementById('toggleSidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
+
+  toggleSidebar.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
   });
 
-  document.getElementById("generalPurposeBtn").addEventListener("click", () => {
-    window.location.href = "https://sunny1451.github.io/ai/general.html";
+  closeSidebar.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+  });
+
+  // Optional: Close sidebar if clicked outside on mobile
+  document.addEventListener('click', (event) => {
+    if (!sidebar.contains(event.target) && !toggleSidebar.contains(event.target)) {
+      sidebar.classList.remove('open');
+    }
   });
 </script>
-
 </body>
 </html>
