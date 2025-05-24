@@ -4,477 +4,748 @@
   <meta charset="UTF-8" />
   <title>WhatsApp Style Real-time Chat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(to bottom right, #ffe6e6, #fff5f5);
-  }
-
-  header {
-    background: linear-gradient(to right, #ff5f6d, #ffc371);
-    color: white;
-    padding: 15px 25px;
-    font-size: 22px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-
-  #currentUser {
-    font-size: 14px;
-    font-weight: normal;
-    opacity: 0.85;
-  }
-
-  main {
-    flex: 1;
-    max-width: 720px;
-    margin: 20px auto;
-    width: 95%;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  }
-
-  .search-section {
-    display: flex;
-    padding: 14px 20px;
-    background: #fbe5e5;
-    gap: 10px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .search-section input {
-    flex: 1;
-    padding: 10px 16px;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    outline: none;
-    transition: all 0.3s ease;
-  }
-
-  .search-section input:focus {
-    border-color: #ff5f6d;
-    box-shadow: 0 0 0 2px rgba(255, 95, 109, 0.2);
-  }
-
-  .search-section button {
-    background: #ff5f6d;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 25px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  .search-section button:hover {
-    background: #e64558;
-  }
-
-  .chat-header {
-    padding: 14px 20px;
-    background: #fff0f0;
-    font-weight: bold;
-    font-size: 17px;
-    border-bottom: 1px solid #f1cfcf;
-    display: flex;
-    align-items: center;
-    color: #d14a61;
-  }
-
-  #chatBox {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background: #fffafc;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .message {
-    max-width: 75%;
-    padding: 12px 16px;
-    border-radius: 20px;
-    font-size: 15px;
-    line-height: 1.4;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-
-  .message.sent {
-    align-self: flex-end;
-    background: #d4ffdc;
-    border-bottom-right-radius: 5px;
-  }
-
-  .message.received {
-    align-self: flex-start;
-    background: #ffffff;
-    border-bottom-left-radius: 5px;
-  }
-
-  .chat-input {
-    display: flex;
-    padding: 14px 18px;
-    background: #fff;
-    border-top: 1px solid #eee;
-    gap: 10px;
-  }
-
-  .chat-input textarea {
-    flex: 1;
-    resize: none;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-    padding: 12px 16px;
-    font-size: 15px;
-    line-height: 20px;
-    height: 42px;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-
-  .chat-input textarea:focus {
-    border-color: #ff5f6d;
-    box-shadow: 0 0 0 2px rgba(255, 95, 109, 0.2);
-  }
-
-  .chat-input button {
-    width: 42px;
-    height: 42px;
-    background: #ff5f6d;
-    border: none;
-    border-radius: 50%;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s ease;
-  }
-
-  .chat-input button:hover:not(:disabled) {
-    background: #e64558;
-  }
-
-  .chat-input button:disabled {
-    background: #ffd4d4;
-    cursor: not-allowed;
-  }
-
-  .no-chat {
-    margin-top: 20px;
-    color: #999;
-    text-align: center;
-    font-style: italic;
-    font-size: 15px;
-  }
-  #chatAIButton {
-    position: fixed;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    background: linear-gradient(135deg, #ff5f6d, #ffc371);
-    color: white;
-    padding: 14px 22px;
-    border-top-right-radius: 30px;
-    border-bottom-right-radius: 30px;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 3px 3px 12px rgba(255, 95, 109, 0.6);
-    user-select: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 1000;
-    transition: left 0.3s ease, box-shadow 0.3s ease;
-    text-decoration: none;
-  }
-  #chatAIButton:hover {
-    left: 8px;
-    box-shadow: 5px 5px 20px rgba(255, 95, 109, 0.9);
-  }
-  #chatAIButton svg {
-    width: 22px;
-    height: 22px;
-    fill: white;
-    flex-shrink: 0;
-  }
-</style>
-
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #1e1e1e;
+      color: #e0e0e0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+      -webkit-overflow-scrolling: touch;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 15px 25px;
+      font-size: 22px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #currentUser {
+      font-size: 14px;
+      font-weight: normal;
+      opacity: 0.85;
+    }
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 20px auto;
+      width: 95%;
+      background: #252525;
+      display: flex;
+      flex-direction: column;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .search-section {
+      display: flex;
+      padding: 14px 20px;
+      background: #2a2a2a;
+      gap: 10px;
+      border-bottom: 1px solid #444;
+    }
+    .search-section input {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 25px;
+      border: 1px solid #555;
+      font-size: 15px;
+      outline: none;
+      background: #333;
+      color: #e0e0e0;
+      transition: border-color 0.3s ease;
+    }
+    .search-section input:focus {
+      border-color: #fff;
+    }
+    .search-section button {
+      background: #fff;
+      color: #1e1e1e;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-section button:hover {
+      background: #e0e0e0;
+    }
+    .chat-header {
+      padding: 14px 20px;
+      background: #333;
+      font-weight: bold;
+      font-size: 17px;
+      border-bottom: 1px solid #444;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      color: #fff;
+      cursor: pointer;
+    }
+    .chat-header-buttons {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .chat-header-buttons.visible {
+      display: flex;
+    }
+    .chat-header-buttons button {
+      background: #fff;
+      color: #1e1e1e;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      text-align: left;
+    }
+    .chat-header-buttons button:hover {
+      background: #e0e0e0;
+    }
+    #chatBox {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #252525;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #chatBox::-webkit-scrollbar {
+      width: 6px;
+    }
+    #chatBox::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 3px;
+    }
+    .message {
+      max-width: 75%;
+      padding: 12px 16px;
+      border-radius: 20px;
+      font-size: 15px;
+      line-height: 1.4;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      position: relative;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .message.sent {
+      align-self: flex-end;
+      background: #4a4a4a;
+      color: #fff;
+      border-bottom-right-radius: 5px;
+    }
+    .message.received {
+      align-self: flex-start;
+      background: #333;
+      color: #e0e0e0;
+      border-bottom-left-radius: 5px;
+    }
+    .chat-input {
+      display: flex;
+      padding: 14px 18px;
+      background: #2a2a2a;
+      border-top: 1px solid #444;
+      gap: 10px;
+    }
+    .chat-input textarea {
+      flex: 1;
+      resize: none;
+      border-radius: 25px;
+      border: 1px solid #555;
+      padding: 12px 16px;
+      font-size: 15px;
+      line-height: 20px;
+      height: 42px;
+      font-family: inherit;
+      outline: none;
+      background: #333;
+      color: #e0e0e0;
+      transition: border-color 0.3s ease;
+    }
+    .chat-input textarea:focus {
+      border-color: #fff;
+    }
+    .chat-input button {
+      width: 42px;
+      height: 42px;
+      background: #fff;
+      border: none;
+      border-radius: 50%;
+      color: #1e1e1e;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    .chat-input button:hover:not(:disabled) {
+      background: #e0e0e0;
+    }
+    .chat-input button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+    .no-chat {
+      margin-top: 20px;
+      color: #999;
+      text-align: center;
+      font-style: italic;
+      font-size: 15px;
+    }
+    #chatAIButton {
+      position: fixed;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      background: #333;
+      color: #fff;
+      padding: 14px 22px;
+      border-top-right-radius: 30px;
+      border-bottom-right-radius: 30px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.6);
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      transition: left 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+    }
+    #chatAIButton:hover {
+      left: 8px;
+      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.9);
+    }
+    #chatAIButton svg {
+      width: 22px;
+      height: 22px;
+      fill: #fff;
+      flex-shrink: 0;
+    }
+    .chat-history {
+      padding: 14px 20px;
+      background: #2a2a2a;
+      border-top: 1px solid #444;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .chat-history::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-history::-webkit-scrollbar-thumb {
+      background: #555;
+      border-radius: 3px;
+    }
+    .chat-history-item {
+      padding: 10px;
+      background: #333;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-history-item:hover {
+      background: #444;
+    }
+    .chat-history-item .chat-title {
+      font-size: 14px;
+      color: #e0e0e0;
+      font-weight: bold;
+    }
+    .chat-history-item .chat-preview {
+      font-size: 12px;
+      color: #999;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      max-width: 300px;
+      cursor: pointer;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      z-index: 1000;
+    }
+    .notification.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .notification:hover {
+      background: #444;
+    }
+    .notification .sender {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .notification .message {
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    WhatsApp
+    <div>
+      <span id="currentUser" aria-live="polite">Not logged in</span>
+      <button id="logoutBtn" style="display:none; margin-left: 10px; padding: 5px 10px; background: #fff; color: #1e1e1e; border: none; border-radius: 5px; cursor: pointer;" aria-label="Logout">Logout</button>
+    </div>
+  </header>
+  <a href="" id="chatAIButton" title="Chat with AI" aria-label="Open AI chat">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 4h16v12H5.17L4 17.17V4zM20 2H4a2 2 0 00-2 2v16l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
+    </svg>
+    Chat with AI
+  </a>
+  <main>
+    <div class="search-section">
+      <input id="recipientEmailInput" type="email" placeholder="Enter recipient email to chat" aria-label="Recipient email" />
+      <button id="startChatBtn" aria-label="Start chat with recipient">Start Chat</button>
+    </div>
+    <div class="chat-header" id="chatHeader" style="display:none">
+      <span id="chatHeaderText" aria-live="polite"></span>
+      <div class="chat-header-buttons" id="chatHeaderButtons">
+        <button id="newChatBtn" aria-label="Start new chat">➕ New Chat</button>
+        <button id="deleteChat" aria-label="Clear current chat">🗑️ Clear Chat</button>
+      </div>
+    </div>
+    <div id="chatBox" class="chat-box" role="log" aria-live="polite">
+      <div class="no-chat">No chat selected. Enter recipient email above or select from history below.</div>
+    </div>
+    <div class="chat-input" id="chatForm" style="display:none">
+      <textarea id="messageInput" rows="1" placeholder="Type a message" aria-label="Type a message"></textarea>
+      <button type="submit" disabled aria-label="Send message">➤</button>
+    </div>
+    <div class="chat-history" id="chatHistory" role="list">
+      <div class="no-chat">No chat history available.</div>
+    </div>
+  </main>
+  <div id="notification" class="notification"></div>
 
-<header>
-  WhatsApp
-  <div>
-    <span id="currentUser">Not logged in</span>
-  </div>
-</header>
-<a href="https://sunny1451.github.io/ai/chaithanyai.html" id="chatAIButton" title="Chat with AI" aria-label="Go to AI chat">
-  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 4h16v12H5.17L4 17.17V4zM20 2H4a2 2 0 00-2 2v16l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/>
-  </svg>
-  Chat with AI
-</a>
-<main>
-  <div class="search-section">
-    <input id="recipientEmailInput" type="email" placeholder="Enter recipient email to chat" />
-    <button id="startChatBtn">Start Chat</button>
-  </div>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+  <script type="module">
+    // IMPORTANT: Move Firebase config to a server-side environment or .env file in production
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, addDoc, deleteDoc,
+      collection, query, orderBy, onSnapshot, serverTimestamp, getDocs, limit, where, startAfter
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  <div class="chat-header" id="chatHeader" style="display:none"></div>
+    // For local development, uncomment to use Firebase Emulator
+    // import { connectFirestoreEmulator } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    // connectFirestoreEmulator(db, "localhost", 8080);
 
-  <div id="chatBox" class="chat-box">
-    <div class="no-chat">No chat selected. Enter recipient email above and start chatting.</div>
-  </div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBh28_IbZA9VYMmHaGu6pof1ZqRzc7nxsY",
+      authDomain: "chatbot-54dc8.firebaseapp.com",
+      projectId: "chatbot-54dc8",
+      storageBucket: "chatbot-54dc8.firebasestorage.app",
+      messagingSenderId: "663702276358",
+      appId: "1:663702276358:web:9bcfcbda928651171e3687",
+      measurementId: "G-5EF55C1HEV"
+    };
 
-  <form id="chatForm" class="chat-input" style="display:none" autocomplete="off">
-    <textarea id="messageInput" rows="1" placeholder="Type a message"></textarea>
-    <button type="submit" disabled>➤</button>
-  </form>
-</main>
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
-  import {
-    getFirestore, doc, getDoc, setDoc, addDoc,
-    collection, query, orderBy, onSnapshot, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-auth.js";
+    const currentUserSpan = document.getElementById("currentUser");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const recipientEmailInput = document.getElementById("recipientEmailInput");
+    const startChatBtn = document.getElementById("startChatBtn");
+    const chatHeader = document.getElementById("chatHeader");
+    const chatHeaderText = document.getElementById("chatHeaderText");
+    const chatHeaderButtons = document.getElementById("chatHeaderButtons");
+    const chatBox = document.getElementById("chatBox");
+    const chatForm = document.getElementById("chatForm");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = chatForm.querySelector("button");
+    const newChatBtn = document.getElementById("newChatBtn");
+    const deleteChatBtn = document.getElementById("deleteChat");
+    const aiChatBtn = document.getElementById("aiChatBtn");
+    const chatHistory = document.getElementById("chatHistory");
+    const notification = document.getElementById("notification");
 
-  // Your actual Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyBh28_IbZA9VYMmHaGu6pof1ZqRzc7nxsY",
-    authDomain: "chatbot-54dc8.firebaseapp.com",
-    projectId: "chatbot-54dc8",
-    storageBucket: "chatbot-54dc8.firebasestorage.app",
-    messagingSenderId: "663702276358",
-    appId: "1:663702276358:web:9bcfcbda928651171e3687",
-    measurementId: "G-5EF55C1HEV"
-  };
+    let currentUser = null;
+    let currentChatRoomId = null;
+    let unsubscribeMessages = null;
+    let lastMessageId = null;
+    let lastChatDoc = null; // For pagination
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  // DOM references
-  const currentUserSpan = document.getElementById("currentUser");
-  const recipientEmailInput = document.getElementById("recipientEmailInput");
-  const startChatBtn = document.getElementById("startChatBtn");
-  const chatHeader = document.getElementById("chatHeader");
-  const chatBox = document.getElementById("chatBox");
-  const chatForm = document.getElementById("chatForm");
-  const messageInput = document.getElementById("messageInput");
-  const sendBtn = chatForm.querySelector("button");
-
-  let currentUser = null;  // logged-in user email
-  let currentChatRoomId = null;
-  let unsubscribeMessages = null;
-
-  // Update UI to show logged-in email or not logged in
-  function updateCurrentUserUI() {
-    if (currentUser) {
-      currentUserSpan.innerHTML = `Logged in as: <strong>${currentUser}</strong>`;
-    } else {
-      currentUserSpan.innerHTML = `Not logged in`;
+    function sanitizeInput(input) {
+      const div = document.createElement("div");
+      div.textContent = input;
+      return div.innerHTML;
     }
-  }
 
-  // Create chat room id based on two emails
-  function createChatRoomId(email1, email2) {
-    return [email1.trim().toLowerCase(), email2.trim().toLowerCase()].sort().join("_");
-  }
-
-  // Check if user exists in Firestore "users" collection
-  async function userExists(email) {
-    const userDoc = await getDoc(doc(db, "users", email.toLowerCase()));
-    return userDoc.exists();
-  }
-
-  // Create chat room doc if not exists
-  async function getOrCreateChatRoom(chatRoomId, participants) {
-    const chatDocRef = doc(db, "chats", chatRoomId);
-    const chatSnap = await getDoc(chatDocRef);
-
-    if (!chatSnap.exists()) {
-      await setDoc(chatDocRef, { participants });
+    function showToast(message, type = "error") {
+      Toastify({
+        text: message,
+        duration: 5000,
+        gravity: "top",
+        position: "right",
+        backgroundColor: type === "error" ? "#d32f2f" : "#4caf50",
+        stopOnFocus: true
+      }).showToast();
     }
-    return chatDocRef;
-  }
 
-  // Clear chat UI messages
-  function clearChat() {
-    chatBox.innerHTML = '';
-  }
-
-  // Scroll chat to bottom
-  function scrollToBottom() {
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  // Render single message
-  function renderMessage(msg) {
-    const div = document.createElement("div");
-    div.classList.add("message");
-    div.classList.add(msg.sender === currentUser ? "sent" : "received");
-    div.textContent = msg.text;
-    chatBox.appendChild(div);
-  }
-
-  // Listen to chat messages realtime
-  function listenMessages(chatRoomId) {
-    if (unsubscribeMessages) unsubscribeMessages();
-
-    const messagesRef = collection(db, "chats", chatRoomId, "messages");
-    const q = query(messagesRef, orderBy("timestamp", "asc"));
-
-    unsubscribeMessages = onSnapshot(q, (snapshot) => {
-      clearChat();
-      if (snapshot.empty) {
-        chatBox.innerHTML = `<div class="no-chat">No messages yet. Say hi!</div>`;
+    function updateCurrentUserUI() {
+      if (currentUser) {
+        currentUserSpan.innerHTML = `Logged in as: <strong>${sanitizeInput(currentUser)}</strong>`;
+        logoutBtn.style.display = "inline-block";
       } else {
-        snapshot.forEach(doc => {
-          renderMessage(doc.data());
-        });
-        scrollToBottom();
+        currentUserSpan.innerHTML = `Not logged in`;
+        logoutBtn.style.display = "none";
       }
-    });
-  }
-
-  // Start chat with recipient
-  async function startChatWith(recipientEmail) {
-    if (!currentUser) {
-      alert("You must be logged in to start a chat.");
-      return;
-    }
-    recipientEmail = recipientEmail.trim().toLowerCase();
-    if (recipientEmail === currentUser) {
-      alert("You cannot chat with yourself!");
-      return;
-    }
-    if (!recipientEmail) {
-      alert("Please enter a recipient email.");
-      return;
     }
 
-    startChatBtn.disabled = true;
-    startChatBtn.textContent = "Checking...";
-    try {
-      const exists = await userExists(recipientEmail);
-      if (!exists) {
-        alert("Recipient user not found in users collection.");
+    function createChatRoomId(email1, email2) {
+      return [email1.trim().toLowerCase(), email2.trim().toLowerCase()].sort().join("_");
+    }
+
+    async function userExists(email) {
+      try {
+        const userDoc = await getDoc(doc(db, "users", email.toLowerCase()));
+        return userDoc.exists();
+      } catch (error) {
+        console.error("Error checking user existence:", error);
+        showToast("Error verifying user.", "error");
+        return false;
+      }
+    }
+
+    async function getOrCreateChatRoom(chatRoomId, participants) {
+      try {
+        const chatDocRef = doc(db, "chats", chatRoomId);
+        const chatSnap = await getDoc(chatDocRef);
+        if (!chatSnap.exists()) {
+          await setDoc(chatDocRef, { participants });
+        }
+        return chatDocRef;
+      } catch (error) {
+        console.error("Error creating chat room:", error);
+        throw error;
+      }
+    }
+
+    function clearChat() {
+      chatBox.innerHTML = '';
+    }
+
+    function scrollToBottom() {
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function renderMessage(msg) {
+      const div = document.createElement("div");
+      div.classList.add("message");
+      div.classList.add(msg.sender === currentUser ? "sent" : "received");
+      div.textContent = sanitizeInput(msg.text);
+      div.setAttribute("role", "listitem");
+      chatBox.appendChild(div);
+    }
+
+    function showNotification(sender, message, chatRoomId) {
+      notification.innerHTML = `
+        <div class="sender">You got a message from ${sanitizeInput(sender)}</div>
+        <div class="message">${sanitizeInput(message)}</div>
+      `;
+      notification.classList.add("visible");
+      const timeout = setTimeout(() => {
+        notification.classList.remove("visible");
+      }, 5000);
+      notification.onclick = () => {
+        clearTimeout(timeout);
+        notification.classList.remove("visible");
+        startChatWith(sender);
+      };
+    }
+
+    function listenMessages(chatRoomId) {
+      if (unsubscribeMessages) unsubscribeMessages();
+      const messagesRef = collection(db, "chats", chatRoomId, "messages");
+      const q = query(messagesRef, orderBy("timestamp", "asc"));
+      unsubscribeMessages = onSnapshot(q, (snapshot) => {
+        clearChat();
+        if (snapshot.empty) {
+          chatBox.innerHTML = `<div class="no-chat">No messages yet. Say hi!</div>`;
+        } else {
+          snapshot.forEach(doc => {
+            const msg = doc.data();
+            renderMessage(msg);
+            if (doc.id !== lastMessageId && msg.sender !== currentUser && currentChatRoomId !== chatRoomId) {
+              showNotification(msg.sender, msg.text, chatRoomId);
+              lastMessageId = doc.id;
+            }
+          });
+          scrollToBottom();
+        }
+      }, (error) => {
+        console.error("Error listening to messages:", error);
+        showToast("Failed to load messages: " + error.message, "error");
+      });
+    }
+
+    async function loadChatHistory(pageSize = 10) {
+      if (!currentUser) {
+        chatHistory.innerHTML = `<div class="no-chat">Please log in to view chat history.</div>`;
         return;
       }
-      currentChatRoomId = createChatRoomId(currentUser, recipientEmail);
-      const participants = [currentUser, recipientEmail];
-      await getOrCreateChatRoom(currentChatRoomId, participants);
-      chatHeader.style.display = "flex";
-      chatHeader.textContent = `Chat with ${recipientEmail}`;
-      chatForm.style.display = "flex";
-      messageInput.value = "";
-      sendBtn.disabled = true;
-      listenMessages(currentChatRoomId);
-    } catch (e) {
-      alert("Error starting chat: " + e.message);
-    } finally {
-      startChatBtn.disabled = false;
-      startChatBtn.textContent = "Start Chat";
+      try {
+        const chatsRef = collection(db, "chats");
+        let q = query(chatsRef, where("participants", "array-contains", currentUser), limit(pageSize));
+        if (lastChatDoc) {
+          q = query(chatsRef, where("participants", "array-contains", currentUser), limit(pageSize), startAfter(lastChatDoc));
+        }
+        const querySnapshot = await getDocs(q);
+        lastChatDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+        const chatItems = [];
+
+        for (const doc of querySnapshot.docs) {
+          const chatData = doc.data();
+          const otherUser = chatData.participants.find(email => email !== currentUser);
+          const messagesRef = collection(db, "chats", doc.id, "messages");
+          const msgQuery = query(messagesRef, orderBy("timestamp", "desc"), limit(1));
+          const msgSnap = await getDocs(msgQuery);
+          if (!msgSnap.empty) {
+            const msg = msgSnap.docs[0].data();
+            const preview = sanitizeInput(msg.text.substring(0, 30) + (msg.text.length > 30 ? "..." : ""));
+            chatItems.push({ chatRoomId: doc.id, otherUser, preview, timestamp: msg.timestamp });
+          }
+        }
+
+        if (chatItems.length === 0 && !lastChatDoc) {
+          chatHistory.innerHTML = `<div class="no-chat">No chats available.</div>`;
+        } else {
+          chatItems.sort((a, b) => b.timestamp.toMillis() - a.timestamp.toMillis());
+          chatItems.forEach(item => {
+            const div = document.createElement("div");
+            div.classList.add("chat-history-item");
+            div.setAttribute("role", "listitem");
+            div.setAttribute("tabindex", "0");
+            div.innerHTML = `
+              <span class="chat-title">${sanitizeInput(item.otherUser)}</span>
+              <span class="chat-preview">${preview}</span>
+            `;
+            div.addEventListener("click", () => startChatWith(item.otherUser));
+            div.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                startChatWith(item.otherUser);
+              }
+            });
+            chatHistory.appendChild(div);
+          });
+        }
+      } catch (error) {
+        console.error("Error loading chat history:", error);
+        showToast("Failed to load chat history: " + error.message, "error");
+      }
     }
-  }
 
-  // Send message handler
-  chatForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    if (!currentUser || !currentChatRoomId) return;
-
-    const text = messageInput.value.trim();
-    if (!text) return;
-
-    sendBtn.disabled = true;
-    try {
-      const messagesRef = collection(db, "chats", currentChatRoomId, "messages");
-      await addDoc(messagesRef, {
-        text,
-        sender: currentUser,
-        timestamp: serverTimestamp()
-      });
-      messageInput.value = "";
-      sendBtn.disabled = true;
-      scrollToBottom();
-    } catch (e) {
-      alert("Error sending message: " + e.message);
+    async function startChatWith(recipientEmail) {
+      if (!currentUser) {
+        showToast("You must be logged in to start a chat.", "error");
+        return;
+      }
+      recipientEmail = sanitizeInput(recipientEmail.trim().toLowerCase());
+      if (recipientEmail === currentUser) {
+        showToast("You cannot chat with yourself!", "error");
+        return;
+      }
+      if (!recipientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipientEmail)) {
+        showToast("Please enter a valid recipient email.", "error");
+        return;
+      }
+      startChatBtn.disabled = true;
+      startChatBtn.textContent = "Checking...";
+      try {
+        const exists = await userExists(recipientEmail);
+        if (!exists) {
+          showToast("Recipient user not found.", "error");
+          return;
+        }
+        currentChatRoomId = createChatRoomId(currentUser, recipientEmail);
+        const participants = [currentUser, recipientEmail];
+        await getOrCreateChatRoom(currentChatRoomId, participants);
+        chatHeader.style.display = "flex";
+        chatHeaderText.textContent = `Chat with ${sanitizeInput(recipientEmail)}`;
+        chatHeaderButtons.classList.remove("visible");
+        chatForm.style.display = "flex";
+        messageInput.value = "";
+        sendBtn.disabled = true;
+        listenMessages(currentChatRoomId);
+        loadChatHistory();
+      } catch (error) {
+        console.error("Error starting chat:", error);
+        showToast("Error starting chat: " + error.message, "error");
+      } finally {
+        startChatBtn.disabled = false;
+        startChatBtn.textContent = "Start Chat";
+      }
     }
-  });
 
-  // Enable/disable send button based on input
-  messageInput.addEventListener("input", () => {
-    sendBtn.disabled = !messageInput.value.trim();
-  });
+    async function clearChatMessages() {
+      if (!currentChatRoomId) return;
+      try {
+        const messagesRef = collection(db, "chats", currentChatRoomId, "messages");
+        const querySnapshot = await getDocs(messagesRef);
+        const deletePromises = querySnapshot.docs.map(doc => deleteDoc(doc.ref));
+        await Promise.all(deletePromises);
+        clearChat();
+        chatBox.innerHTML = `<div class="no-chat">No messages yet. Say hi!</div>`;
+        loadChatHistory();
+        showToast("Chat cleared successfully.", "success");
+      } catch (error) {
+        console.error("Error clearing chat:", error);
+        showToast("Failed to clear chat: " + error.message, "error");
+      }
+    }
 
-  // Start chat button click
-  startChatBtn.addEventListener("click", () => {
-    startChatWith(recipientEmailInput.value);
-  });
+    chatHeader.addEventListener("click", (e) => {
+      if (e.target === chatHeaderText) {
+        chatHeaderButtons.classList.toggle("visible");
+      }
+    });
 
-  // Allow Enter key to start chat
-  recipientEmailInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
+    chatForm.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!currentUser || !currentChatRoomId) return;
+      const text = sanitizeInput(messageInput.value.trim());
+      if (!text || text.length > 1000) {
+        showToast("Message is empty or too long (max 1000 characters).", "error");
+        return;
+      }
+      sendBtn.disabled = true;
+      try {
+        const messagesRef = collection(db, "chats", currentChatRoomId, "messages");
+        const docRef = await addDoc(messagesRef, {
+          text,
+          sender: currentUser,
+          timestamp: serverTimestamp()
+        });
+        lastMessageId = docRef.id;
+        messageInput.value = "";
+        sendBtn.disabled = true;
+        scrollToBottom();
+        loadChatHistory();
+      } catch (error) {
+        console.error("Error sending message:", error);
+        showToast("Error sending message: " + error.message, "error");
+      }
+    });
+
+    messageInput.addEventListener("input", () => {
+      sendBtn.disabled = !messageInput.value.trim();
+    });
+
+    startChatBtn.addEventListener("click", () => {
       startChatWith(recipientEmailInput.value);
-    }
-  });
+    });
 
-  // Listen for Firebase Auth state changes
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      currentUser = user.email;
-      updateCurrentUserUI();
+    recipientEmailInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        startChatWith(recipientEmailInput.value);
+      }
+    });
 
-      // Reset chat UI on login
+    newChatBtn.addEventListener("click", () => {
+      chatHeader.style.display = "none";
+      chatForm.style.display = "none";
       currentChatRoomId = null;
       if (unsubscribeMessages) unsubscribeMessages();
       unsubscribeMessages = null;
-      chatHeader.style.display = "none";
-      chatForm.style.display = "none";
-      chatBox.innerHTML = `<div class="no-chat">No chat selected. Enter recipient email above and start chatting.</div>`;
-    } else {
-      currentUser = null;
-      updateCurrentUserUI();
+      clearChat();
+      chatBox.innerHTML = `<div class="no-chat">No chat selected. Enter recipient email above or select from history below.</div>`;
+      recipientEmailInput.value = "";
+      lastChatDoc = null;
+      loadChatHistory();
+    });
 
-      // Optionally redirect to login page if user not logged in
-      // window.location.href = 'login.html';
+    deleteChatBtn.addEventListener("click", async () => {
+      if (confirm("Are you sure you want to clear this chat?")) {
+        await clearChatMessages();
+      }
+    });
 
-      chatHeader.style.display = "none";
-      chatForm.style.display = "none";
-      chatBox.innerHTML = `<div class="no-chat">Please log in to chat.</div>`;
-    }
-  });
+    aiChatBtn.addEventListener("click", () => {
+      showToast("AI chat feature not implemented in this version.", "error");
+    });
 
-</script>
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        showToast("Logged out successfully.", "success");
+      } catch (error) {
+        console.error("Error logging out:", error);
+        showToast("Error logging out: " + error.message, "error");
+      }
+    });
 
+    onAuthStateChanged(auth, (user) => {
+      try {
+        if (user) {
+          currentUser = user.email;
+          updateCurrentUserUI();
+          currentChatRoomId = null;
+          if (unsubscribeMessages) unsubscribeMessages();
+          unsubscribeMessages = null;
+          chatHeader.style.display = "none";
+          chatForm.style.display = "none";
+          chatBox.innerHTML = `<div class="no-chat">No chat selected. Enter recipient email above or select from history below.</div>`;
+          lastChatDoc = null;
+          loadChatHistory();
+        } else {
+          currentUser = null;
+          updateCurrentUserUI();
+          chatHeader.style.display = "none";
+          chatForm.style.display = "none";
+          chatBox.innerHTML = `<div class="no-chat">Please log in to chat.</div>`;
+          chatHistory.innerHTML = `<div class="no-chat">Please log in to view chat history.</div>`;
+        }
+      } catch (error) {
+        console.error("Error in auth state change:", error);
+        showToast("Error initializing app: " + error.message, "error");
+      }
+    });
+  </script>
 </body>
 </html>
